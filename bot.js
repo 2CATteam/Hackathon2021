@@ -8,6 +8,7 @@ var jsonReaderWriter = new jsonReaderWriterFile()
 
 var data = {
     bot: bot,
+    network: jsonReaderWriter.read("./network.json"),
     rw: jsonReaderWriter
 }
 
