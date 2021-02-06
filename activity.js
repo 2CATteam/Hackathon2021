@@ -2,8 +2,8 @@ module.exports = class ActivityTracker {
     constructor(data) {
         this.data = data
         this.data.activityData = this.data.rw.read("activity.json")
-        this.chopInterval = setInterval(this.chop, 10000)
-        this.notifyInterval = setInterval(this.notify, 10000)
+        this.chopInterval = setInterval(this.chop.bind(this), 10000)
+        this.notifyInterval = setInterval(this.notify.bind(this), 10000)
     }
 
     look(presence) {
@@ -26,6 +26,8 @@ module.exports = class ActivityTracker {
     }
 
     chop() { //Function to remove data from more than a week ago
+        console.log(this)
+        console.log(this.data)
         var now = new Date() //Create date for now
         for (var i in this.data.activityData) {  //Loop through all users
             for (var j = 0; j < this.data.activityData[i].length; j++) { //Loop through each user's data
