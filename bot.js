@@ -26,12 +26,12 @@ bot.on("ready", () => {
 })
 
 bot.on("message", (msg) => {
-    if (msg.content.match(/^\/play/i)) {
-        data.activityData[msg.author.id] = [{
-            start: new Date((new Date()).getTime() - (40 * 60 * 60 * 1000) + 5000),
+    if (msg.content.match(/^\/play (\d+)/i)) {
+        data.activityData[msg.author.id].push({
+            start: new Date((new Date()).getTime() - (parseInt(msg.content.match(/^\/play (\d+)/i)[1]) * 60 * 60 * 1000) + 5000),
             end: new Date(),
             game: "TEST GAME"
-        }]
+        })
         data.rw.write("activity.json", data.activityData)
     }
     if (msg.content.match(/^\/forget/i)) {
