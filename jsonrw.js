@@ -1,5 +1,5 @@
 var fs = require("fs")
-class jsonReaderWriter {
+module.exports = class jsonReaderWriter {
     constructor() {
 
     }
