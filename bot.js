@@ -18,6 +18,8 @@ var positivityFile = require("./positivity.js")
 var positivity = new positivityFile(data)
 var messageFile = require("./messageChecker.js")
 var messageChecker = new messageFile(data)
+var signupFile = require("./signup.js")
+var signup = new signupFile(data)
 
 bot.on("ready", () => {
     console.log("Hello, world!")
@@ -38,6 +40,7 @@ bot.on("message", (msg) => {
     }
     positivity.look(msg)
     messageChecker.look(msg)
+    signup.look(msg)
 })
 
 bot.on("presenceUpdate", (old, current) => {
