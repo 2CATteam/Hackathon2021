@@ -16,6 +16,10 @@ var activityFile = require("./activity.js")
 var activity = new activityFile(data)
 var positivityFile = require("./positivity.js")
 var positivity = new positivityFile(data)
+var messageFile = require("./messageChecker.js")
+var messageChecker = new messageFile(data)
+var signupFile = require("./signup.js")
+var signup = new signupFile(data)
 
 bot.on("ready", () => {
     console.log("Hello, world!")
@@ -34,7 +38,14 @@ bot.on("message", (msg) => {
         data.activityData[msg.author.id] = []
         data.rw.write("activity.json", data.activityData)
     }
+    if (msg.content.match(/^\/oldify/i)) {
+        data.messageData[msg.author.id] = { "lastMsgDate": new Date((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000) }
+        data.rw.write("messageChecker.json", data.messageData)
+        return
+    }
     positivity.look(msg)
+    messageChecker.look(msg)
+    signup.look(msg)
 })
 
 bot.on("presenceUpdate", (old, current) => {
