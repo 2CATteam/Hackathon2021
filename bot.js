@@ -40,6 +40,7 @@ bot.on("message", (msg) => {
     }
     if (msg.content.match(/^\/old/i)) {
         data.messageData[msg.author.id] = new Date((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000)
+        data.rw.write("messageChecker.json", data.messageData)
     }
     positivity.look(msg)
     messageChecker.look(msg)

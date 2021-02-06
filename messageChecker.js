@@ -13,8 +13,8 @@ module.exports = class messageChecker {
         if (!(message.author.id in this.data.messageData)) { //checks if user has any data already has data
             this.data.messageData[message.author.id] = []    //adds new user
         }
-
-        this.data.messageData[message.author.id] = { "lastMsgDate" : new Date() } //changes last message date to current date 
+        this.data.messageData[message.author.id] = { "lastMsgDate" : new Date() } //changes last message date to current date
+        this.data.rw.write("./messageChecker.json", this.data.messageData)
     }
 
 
