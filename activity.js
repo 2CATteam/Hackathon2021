@@ -1,7 +1,7 @@
 module.exports = class ActivityTracker {
     constructor(data) {
         this.data = data
-        this.data.activityData = {}
+        this.data.activityData = this.data.rw.read("activity.json")
         this.chopInterval = setInterval(this.chop, 10000)
         this.notifyInterval = setInterval(this.notify, 10000)
     }
@@ -22,7 +22,7 @@ module.exports = class ActivityTracker {
                 this.data.activityData[presence.userID].push({ "start": new Date(), "game": presence.activities[i].name })
             }
         }
-
+        this.data.rw.write("activity.json", this.data.activityData)
     }
 
     chop() { //Function to remove data from more than a week ago
