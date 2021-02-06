@@ -55,8 +55,8 @@ module.exports = class ActivityTracker {
             for (var j in this.data.activityData[i]) { //Sum up how long each gaming session has lasted
                 sum += (this.data.activityData[i][j].end ? this.data.activityData[i][j].end.getTime() : (new Date()).getTime()) - this.data.activityData[i][j].start.getTime()
             }
-            if (sum > 144000000) { //If sum is more than 40 hours
-                for (var j in this.data.network[i]) { //For each contact
+            for (var j in this.data.network[i]) { //For each contact
+                if (sum > this.data.network[i][j].hours * 60 * 60 * 1000) { //If sum is more than 40 hours
                     if (!this.data.network[i][j].activity) { //If they haven't been contacted
                         this.data.network[i][j].activity = true //Contact them
                         this.data.bot.users.fetch(j).then((async (personId, usr) => {
@@ -66,11 +66,11 @@ module.exports = class ActivityTracker {
                             }
                             var person = await this.data.bot.users.fetch(personId)
                             //Send message
-                            dms.send(`Your friend, ${person.username}, has played more than ${Math.floor(sum / 1000 / 60 / 60)} hours of video games this week. They're probably not even that good at them.`)
+                            dms.send(`Your friend, ${person.username}, has played more than ${this.data.network[i][j].hours} hours of video games this week. They're probably not even that good at them.`)
                         }).bind(this, i))
                     }
                 }
-            } else { //Dipped under 40 hours, so reset stuff
+            } else { //Dipped under set hours, so reset stuff
                 for (var j in this.data.network[i]) {
                     this.data.network[i][j].activity = false
                 }
