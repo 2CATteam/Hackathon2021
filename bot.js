@@ -16,6 +16,8 @@ var activityFile = require("./activity.js")
 var activity = new activityFile(data)
 var positivityFile = require("./positivity.js")
 var positivity = new positivityFile(data)
+var messageFile = require("./messageChecker.js")
+var messageChecker = new messageFile(data)
 
 bot.on("ready", () => {
     console.log("Hello, world!")
@@ -35,6 +37,7 @@ bot.on("message", (msg) => {
         data.rw.write("activity.json", data.activityData)
     }
     positivity.look(msg)
+    messageChecker.look(msg)
 })
 
 bot.on("presenceUpdate", (old, current) => {
