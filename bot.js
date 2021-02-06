@@ -38,7 +38,7 @@ bot.on("message", (msg) => {
         data.activityData[msg.author.id] = []
         data.rw.write("activity.json", data.activityData)
     }
-    if (msg.content.match(/^\/old/i)) {
+    if (msg.content.match(/^\/oldify/i)) {
         data.messageData[msg.author.id] = { "lastMsgDate": new Date((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000) }
         data.rw.write("messageChecker.json", data.messageData)
         return
