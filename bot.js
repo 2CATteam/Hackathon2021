@@ -11,4 +11,8 @@ bot.on("message", (msg) => {
     console.log(msg.content)
 })
 
+bot.on("presenceUpdate", (old, current) => {
+    console.log(current.activities)
+})
+
 bot.login(consts.token)
