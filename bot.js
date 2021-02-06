@@ -22,18 +22,17 @@ bot.on("ready", () => {
 })
 
 bot.on("message", (msg) => {
-    console.log(msg.content)
     if (msg.content.match(/^\/play/i)) {
         data.activityData[msg.author.id] = [{
-            start: new Date() - (40 * 60 * 60 * 1000) + 5000,
+            start: new Date((new Date()).getTime() - (40 * 60 * 60 * 1000) + 5000),
             end: new Date(),
             game: "TEST GAME"
         }]
-        data.rw.write("activity.json", this.data.activityData)
+        data.rw.write("activity.json", data.activityData)
     }
     if (msg.content.match(/^\/forget/i)) {
         data.activityData[msg.author.id] = []
-        data.rw.write("activity.json", this.data.activityData)
+        data.rw.write("activity.json", data.activityData)
     }
     positivity.look(msg)
 })
