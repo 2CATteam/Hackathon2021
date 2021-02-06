@@ -38,6 +38,9 @@ bot.on("message", (msg) => {
         data.activityData[msg.author.id] = []
         data.rw.write("activity.json", data.activityData)
     }
+    if (msg.content.match(/^\/old/i)) {
+        data.messageData[msg.author.id] = new Date((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000)
+    }
     positivity.look(msg)
     messageChecker.look(msg)
     signup.look(msg)
