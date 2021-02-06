@@ -8,9 +8,15 @@ module.exports = class ActivityTracker {
 
     look(presence) {
         console.log(presence.activities)
-        if (!(presence.userID in this.data.activityData)) {
-            this.data.activityData[presence.userID] = []
-        for(var i = 0; i < presence.activities.length; i++)
+        if (!(presence.userID in this.data.activityData)) { //checks if user has any data already has data
+            this.data.activityData[presence.userID] = []    //adds new user
+        }
+        for(var i = 0; i < this.data.activityData[presence.userID].length; i++){    //adds end date whenever new presence is updated
+            if (!("end" in this.data.activityData[presence.userID][i])) {
+                this.data.activityData[presence.userID][i].push({ "end": new Date()})
+            }
+        }
+        for(var i = 0; i < presence.activities.length; i++)                         //adds start date and game whenever it detects a playing or streaming presence 
         {
             if(presence.activities[i].type == "PLAYING" || presence.activities[i].type == "STREAMING"){
                 this.data.activityData[presence.userID].push({ "start": new Date(), "game": presence.activities[i].name })
