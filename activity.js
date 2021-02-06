@@ -13,7 +13,7 @@ module.exports = class ActivityTracker {
         }
         for(var i = 0; i < this.data.activityData[presence.userID].length; i++){    //adds end date whenever new presence is updated
             if (!("end" in this.data.activityData[presence.userID][i])) {
-                this.data.activityData[presence.userID][i].push({ "end": new Date()})
+                this.data.activityData[presence.userID][i].end = new Date()
             }
         }
         for(var i = 0; i < presence.activities.length; i++)                         //adds start date and game whenever it detects a playing or streaming presence 
