@@ -20,7 +20,7 @@ module.exports = class Signup {
         } else if (msg.content.match(/^\/support (\d+)/i)) {
             var id = msg.content.match(/^\/support (\d+)/i)[1]
             this.sendSupportRequest(id, msg.author.username, msg.author.id)
-        } else if (msg.content.match(/\/accept (\d+)/i)) {
+        } else if (msg.content.match(/^\/accept (\d+)/i)) {
             if (!this.data.network[msg.author.id]) {
                 this.data.network[msg.author.id] = {}
             }
@@ -35,7 +35,7 @@ module.exports = class Signup {
     sendSupportRequest(id, supporter, supporterID) {
         this.data.bot.users.fetch(id).then(async(usr) => {
             var channel = usr.dmChannel
-            if (channel) {
+            if (!channel) {
                 channel = await usr.createDM()
             }
             channel.send(`${supporter} would like to support your mental health using this bot. What this means is that I will notify them when:
