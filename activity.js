@@ -59,7 +59,7 @@ module.exports = class ActivityTracker {
                 for (var j in this.data.network[i]) { //For each contact
                     if (!this.data.network[i][j].activity) { //If they haven't been contacted
                         this.data.network[i][j].activity = true //Contact them
-                        this.data.bot.users.fetch(j).then(async (personId, usr) => {
+                        this.data.bot.users.fetch(j).then((async (personId, usr) => {
                             var dms = usr.dmChannel
                             if (!dms) { //Create DM if necessary
                                 dms = await usr.createDM()
@@ -67,7 +67,7 @@ module.exports = class ActivityTracker {
                             var person = await this.data.bot.users.fetch(personId)
                             //Send message
                             dms.send(`Your friend, ${person.username}, has played more than ${Math.floor(sum / 1000 / 60 / 60)} hours of video games this week. They're probably not even that good at them.`)
-                        }.bind(this, i))
+                        }).bind(this, i))
                     }
                 }
             } else { //Dipped under 40 hours, so reset stuff
