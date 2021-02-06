@@ -7,7 +7,8 @@ var data = {
     bot: bot
 }
 
-var activity = new (require("./activity.js")(data))
+var activityFile = require("./activity.js")
+var activity = new activityFile()
 
 bot.on("ready", () => {
     console.log("Hello, world!")
@@ -18,6 +19,7 @@ bot.on("message", (msg) => {
 })
 
 bot.on("presenceUpdate", (old, current) => {
+    console.log("Got update")
     activity.look(current)
 })
 
