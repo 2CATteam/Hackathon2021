@@ -26,15 +26,15 @@ module.exports = class messageChecker {
                 for (var j in this.data.network[i]) { //For each contact
                     if (!this.data.network[i][j].messages) { //If they haven't been contacted
                         this.data.network[i][j].messages = true //Contact them
-                        this.data.bot.users.fetch(j).then(async (usr) => {
+                        this.data.bot.users.fetch(j).then(async (personId, usr) => {
                             var dms = usr.dmChannel
                             if (!dms) { //Create DM if necessary
                                 dms = await usr.createDM()
                             }
-                            var person = await this.data.bot.users.fetch(i)
+                            var person = await this.data.bot.users.fetch(personId)
                             //Send message
                             dms.send(`Your friend, ${person.username}, has not sent a message in a week. It may be a good idea to go check on them.`)
-                        })
+                        }.bind(this, i))
                     }
                 }
             } else { //Dipped under 40 hours, so reset stuff
