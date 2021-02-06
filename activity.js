@@ -25,14 +25,17 @@ module.exports = class ActivityTracker {
 
     }
 
-    chop() {
-        var now = new Date()
-        for (var i in this.data.activityData) {
-            for (var j = 0; j < this.data.activityData[i].length; j++) {
-                if (this.data.activityData[i][j].start < now) {
-                    this.data.activityData[i][j].start = now
-                    if (this.data.activityData[i][j].start > this.data.activityData[i][j].end) {
-                        this.data.activityData[i].splice(j, 1)
+    chop() { //Function to remove data from more than a week ago
+        var now = new Date() //Create date for now
+        for (var i in this.data.activityData) {  //Loop through all users
+            for (var j = 0; j < this.data.activityData[i].length; j++) { //Loop through each user's data
+                if (this.data.activityData[i][j].start < now - 7 * 24 * 60 * 60) { //If the start is more than a week go
+                    this.data.activityData[i][j].start = now - 7 * 24 * 60 * 60 //Set the start to a week ago
+                    if (!this.data.activityData[i][j].end) { //If the activity is ongoing, go to next iteration
+                        continue
+                    }
+                    if (this.data.activityData[i][j].start > this.data.activityData[i][j].end) { //If the start has passed the end
+                        this.data.activityData[i].splice(j, 1) //Remove this element from the array
                         j--
                     }
                 }
@@ -40,27 +43,28 @@ module.exports = class ActivityTracker {
         }
     }
 
-    notify() {
-        for (var i in this.data.activityData) {
-            let sum = 0
-            for (var j in this.data.activityData[i]) {
+    notify() { //Send a DM to contacts when they've played more than 40 hours of games
+        for (var i in this.data.activityData) { //Loop through each user
+            let sum = 0 //Accumulator
+            for (var j in this.data.activityData[i]) { //Sum up how long each gaming session has lasted
                 sum += (this.data.activityData[i][j].end ? this.data.activityData[i][j].end : new Date()) - this.data.activityData[i][j].start
             }
-            if (sum > 144000000) {
-                for (var j in this.data.network[i]) {
-                    if (!this.data.network[i][j]) {
-                        this.data.network[i][j] = true
+            if (sum > 144000000) { //If sum is more than 40 hours
+                for (var j in this.data.network[i]) { //For each contact
+                    if (!this.data.network[i][j]) { //If they haven't been contacted
+                        this.data.network[i][j] = true //Contact them
                         this.data.bot.users.fetch(j).then(async (usr) => {
                             var dms = usr.dmChannel
-                            if (!dms) {
+                            if (!dms) { //Create DM if necessary
                                 dms = await usr.createDM()
                             }
                             var person = await this.data.bot.users.fetch(i)
+                            //Send message
                             dms.send(`Your friend, ${person.username}, has played more than ${Math.floor(sum / 1000 / 60 / 60)} hours of video games this week. They're probably not even that good at them.`)
                         })
                     }
                 }
-            } else {
+            } else { //Dipped under 40 hours, so reset stuff
                 for (var j in this.data.network[i]) {
                     this.data.network[i][j] = false
                 }
