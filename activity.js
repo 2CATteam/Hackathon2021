@@ -7,7 +7,6 @@ module.exports = class ActivityTracker {
     }
 
     look(presence) {
-        console.log(presence.activities)
         if (!(presence.userID in this.data.activityData)) { //checks if user has any data already has data
             this.data.activityData[presence.userID] = []    //adds new user
         }
@@ -26,8 +25,6 @@ module.exports = class ActivityTracker {
     }
 
     chop() { //Function to remove data from more than a week ago
-        console.log(this)
-        console.log(this.data)
         var now = new Date() //Create date for now
         for (var i in this.data.activityData) {  //Loop through all users
             for (var j = 0; j < this.data.activityData[i].length; j++) { //Loop through each user's data
