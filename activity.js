@@ -55,13 +55,8 @@ module.exports = class ActivityTracker {
             for (var j in this.data.activityData[i]) { //Sum up how long each gaming session has lasted
                 sum += (this.data.activityData[i][j].end ? this.data.activityData[i][j].end.getTime() : (new Date()).getTime()) - this.data.activityData[i][j].start.getTime()
             }
-            console.log(i)
-            console.log(sum)
             if (sum > 144000000) { //If sum is more than 40 hours
-                console.log("Trying to send")
                 for (var j in this.data.network[i]) { //For each contact
-                    console.log("Trying to send to person")
-                    console.log(j)
                     if (!this.data.network[i][j]) { //If they haven't been contacted
                         this.data.network[i][j] = true //Contact them
                         this.data.bot.users.fetch(j).then(async (usr) => {
