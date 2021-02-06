@@ -3,8 +3,12 @@ var bot = new Discord.Client()
 
 const consts = require("./consts.json")
 
+var jsonReaderWriterFile = require("./jsonrw.js")
+var jsonReaderWriter = new jsonReaderWriterFile()
+
 var data = {
-    bot: bot
+    bot: bot,
+    rw: jsonReaderWriter
 }
 
 var activityFile = require("./activity.js")
