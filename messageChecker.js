@@ -14,18 +14,18 @@ module.exports = class messageChecker {
             this.data.messageData[message.author.id] = []    //adds new user
         }
 
-        this.data.messageData[message.author.id] = { "lastMsgDate" : new Date() }
+        this.data.messageData[message.author.id] = { "lastMsgDate" : new Date() } //changes last message date to current date 
     }
 
 
-    notify() { //Send a DM to contacts when they've played more than 40 hours of games
+    notify() { //Send a DM to contacts when they haven't sent a message after a week
         for (var i in this.data.messageData) { //Loop through each user
             let difference = 0 //difference of date
             difference = new Date().getTime() - this.data.messageData.lastMsgDate.getTime()
             if (difference > 7 * 24 * 60 * 60 * 1000) { //If the difference is more than one week
                 for (var j in this.data.network[i]) { //For each contact
-                    if (!this.data.network[i][j]) { //If they haven't been contacted
-                        this.data.network[i][j] = true //Contact them
+                    if (!this.data.network[i][j].messages) { //If they haven't been contacted
+                        this.data.network[i][j].messages = true //Contact them
                         this.data.bot.users.fetch(j).then(async (usr) => {
                             var dms = usr.dmChannel
                             if (!dms) { //Create DM if necessary
@@ -39,7 +39,7 @@ module.exports = class messageChecker {
                 }
             } else { //Dipped under 40 hours, so reset stuff
                 for (var j in this.data.network[i]) {
-                    this.data.network[i][j] = false
+                    this.data.network[i][j].messages = false
                 }
             }
         }
