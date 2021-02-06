@@ -18,7 +18,6 @@ bot.on("message", (msg) => {
 })
 
 bot.on("presenceUpdate", (old, current) => {
-    console.log(current.activities)
     activity.look(current)
 })
 

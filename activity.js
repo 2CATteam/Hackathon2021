@@ -4,6 +4,6 @@ module.exports = class ActivityTracker {
     }
 
     look(presence) {
-        
+        console.log(presence.activities)
     }
 }
