@@ -22,7 +22,7 @@ bot.on("ready", () => {
 
 bot.on("message", (msg) => {
     console.log(msg.content)
-    positivityFile.look(msg)
+    positivity.look(msg)
 })
 
 bot.on("presenceUpdate", (old, current) => {
