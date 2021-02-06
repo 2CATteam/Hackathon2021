@@ -3,7 +3,7 @@ module.exports = class messageChecker {
         this.data = data
         this.data.messageData = this.data.rw.read("messageChecker.json")
         for (var i in this.data.messageData) { 
-            this.data.messageData.lastMsgDate = new Date(this.data.messageData.lastMsgDate)
+            this.data.messageData[i].lastMsgDate = new Date(this.data.messageData[i].lastMsgDate)
         }
         this.notifyInterval = setInterval(this.notify.bind(this), 10000)
     }
@@ -21,7 +21,7 @@ module.exports = class messageChecker {
     notify() { //Send a DM to contacts when they haven't sent a message after a week
         for (var i in this.data.messageData) { //Loop through each user
             let difference = 0 //difference of date
-            difference = new Date().getTime() - this.data.messageData.lastMsgDate.getTime()
+            difference = (new Date()).getTime() - this.data.messageData[i].lastMsgDate.getTime()
             if (difference > 7 * 24 * 60 * 60 * 1000) { //If the difference is more than one week
                 for (var j in this.data.network[i]) { //For each contact
                     if (!this.data.network[i][j].messages) { //If they haven't been contacted
