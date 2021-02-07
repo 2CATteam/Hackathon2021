@@ -1,5 +1,7 @@
 const Discord = require("discord.js")
-var bot = new Discord.Client()
+var bot = new Discord.Client({
+    fetchAllMembers: true
+})
 
 const consts = require("./consts.json")
 
@@ -26,6 +28,7 @@ bot.on("ready", () => {
 })
 
 bot.on("message", (msg) => {
+    console.log(msg.content)
     if (msg.content.match(/^\/play (\d+)/i)) {
         data.activityData[msg.author.id].push({
             start: new Date((new Date()).getTime() - (parseInt(msg.content.match(/^\/play (\d+)/i)[1]) * 60 * 60 * 1000) + 5000),
