@@ -70,10 +70,10 @@ module.exports = class ActivityTracker {
                         }).bind(this, i))
                     }
                 }
-            } else { //Dipped under set hours, so reset stuff
-                for (var j in this.data.network[i]) {
+                else { //Dipped under set hours, so reset stuff
                     this.data.network[i][j].activity = false
-                }
+                
+                } 
             }
         }
     }

@@ -56,7 +56,7 @@ module.exports = class Signup {
 2. You've gone ${days} day(s) without talking in any of your chats (At least, the ones I'm in as well)
 3. You send incredibly negative messages
 
-To accept this person's support, type /accept ${supporterID}
+To accept this person's support, type /accept ${supporterID} ${hours} ${days}
 If you do not wish to accept this person's support, please contact them to let them know why. If you do not feel comfortable doing that for any reason, feel free to ignore this message.
             `)
         })
