@@ -65,7 +65,7 @@ module.exports = class ActivityTracker {
                                 dms = await usr.createDM()
                             }
                             var person = await this.data.bot.users.fetch(personId)               //Send message
-                            dms.send(`Your friend, ${person.username}, has played more than ${this.data.network[i][j].hours} hours of video games this week. They're probably not even that good at them.`)
+                            dms.send(`Your friend, ${person.username}, has played more than ${this.data.network[personId][usr.id].hours} hours of video games this week. Maybe you should check on them?`)
                         }).bind(this, i))
                     }
                 }

@@ -31,7 +31,7 @@ module.exports = class messageChecker {
                                 dms = await usr.createDM()
                             }
                             var person = await this.data.bot.users.fetch(personId)    //Send message
-                            dms.send(`Your friend, ${person.username}, has not sent a message in ${this.data.network[i][j].days} day(s). It may be a good idea to go check on them.`)
+                            dms.send(`Your friend, ${person.username}, has not sent a message in ${this.data.network[personId][usr.id].days} day(s). It may be a good idea to go check on them.`)
                         }).bind(this, i))
                     }
                 }else {                                                               //Dipped under set days, so reset stuff
