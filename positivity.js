@@ -49,12 +49,14 @@ If this is in fact negative, consider reaching out to the person to make sure ev
 
 			//loop through array that hold positivity scores and see if the keys match the message word
 			for(var h in this.positivityObj){
-				//if the words match sum up the  key values
+				//if the words match sum up the key values
 				if(messageWord == h){
+                    console.log(messageWord, this.positivityObj[h])
 					positivityScore += this.positivityObj[h]
 				}
 			}
-		}
+        }
+        console.log("This message's positivity score is:", positivityScore)
         return positivityScore
     }
 
