@@ -6,30 +6,30 @@ module.exports = class Signup {
     }
 
     look(msg) {
-        if (msg.content.match(/^\/support <@!?(\d+)>(?:\s+(\d+)\s+(\d+))?/i)) {
+        if (msg.content.match(/^\/support <@!?(\d+)>(?:\s+(\d+)\s+(\d+))?/i)) {             //checks for the /support command with @user with video game hours and days limit parameters
             var supReq = msg.content.match(/^\/support <@!?(\d+)>(?:\s+(\d+)\s+(\d+))?/i)
             var id = supReq[1]
             var videoGameHours = supReq[2]
             var msgDays = supReq[3]
             this.sendSupportRequest(id, msg.author.username, msg.author.id, videoGameHours, msgDays)
-        } else if (msg.content.match(/^\/support (.+#\d{4})(?:\s+(\d+)\s+(\d+))?/i)) {
+        } else if (msg.content.match(/^\/support (.+#\d{4})(?:\s+(\d+)\s+(\d+))?/i)) {      //checks for the /support command with username with video game hours and days limit parameters
             var supReq = msg.content.match(/^\/support (.+#\d{4})(?:\s+(\d+)\s+(\d+))?/i)
             var username = supReq[1]
             var videoGameHours = supReq[2]
             var msgDays = supReq[3]
-            var id = this.data.bot.users.cache.find(u => u.tag == username).id
-            if (!id) {
+            var id = this.data.bot.users.cache.find(u => u.tag == username).id              
+            if (!id) {                                                                      //check if user is in server
                 msg.channel.send("I could not find that user. Make sure they're in the same server as me. Try running this command with an @mention to them, or do it with their id.")
                 return
             }
             this.sendSupportRequest(id, msg.author.username, msg.author.id, videoGameHours, msgDays)
-        } else if (msg.content.match(/^\/support (\d+)(?:\s+(\d+)\s+(\d+))?/i)) {
+        } else if (msg.content.match(/^\/support (\d+)(?:\s+(\d+)\s+(\d+))?/i)) {           //checks for the /support command with user ID with video game hours and days limit parameters
             var supReq = msg.content.match(/^\/support (.+#\d{4})(?:\s+(\d+)\s+(\d+))?/i)
             var id = supReq[1]
             var videoGameHours = supReq[2]
             var msgDays = supReq[3]
             this.sendSupportRequest(id, msg.author.username, msg.author.id, videoGameHours, msgDays)
-        } else if (msg.content.match(/^\/accept (\d+)(?:\s+(\d+)\s+(\d+))?/i)) {
+        } else if (msg.content.match(/^\/accept (\d+)(?:\s+(\d+)\s+(\d+))?/i)) {            //accept message with the same parameters
             if (!this.data.network[msg.author.id]) {
                 this.data.network[msg.author.id] = {}
             }
@@ -44,7 +44,7 @@ module.exports = class Signup {
         }
     }
 
-    sendSupportRequest(id, supporter, supporterID, hours, days) {
+    sendSupportRequest(id, supporter, supporterID, hours, days) {                           //generate support message 
         this.data.bot.users.fetch(id).then(async(usr) => {
             var channel = usr.dmChannel
             if (!channel) {
