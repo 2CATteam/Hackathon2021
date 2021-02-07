@@ -1,10 +1,18 @@
 {
 	"163824787540541441": {
 		"192065620865449984": {
-			"activity": false,
+			"activity": true,
 			"messages": false,
 			"hours": "80",
 			"days": "10"
+		}
+	},
+	"192065620865449984": {
+		"163824787540541441": {
+			"activity": false,
+			"messages": false,
+			"hours": "40",
+			"days": "7"
 		}
 	}
 }

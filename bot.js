@@ -29,6 +29,7 @@ bot.on("ready", () => { //Lets us know when it's ready to go
 
 bot.on("message", (msg) => { //Message routing
     console.log(msg.content) //Log message to let us know we got it
+    if (msg.author.id == "807665502011785246") { return } //Ignore own messages
     if (msg.content.match(/^\/play (\d+)/i)) { //Add fake gaming activity
         if (!data.activityData[msg.author.id]) { //Create if no record exists
             data.activityData[msg.author.id] = []

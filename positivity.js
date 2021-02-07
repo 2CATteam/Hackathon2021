@@ -16,6 +16,22 @@ module.exports = class PositivityTracker {
                 channel.send("Hey, your last message seemed a little negative. It's okay to be negative sometimes, but maybe take a moment to consider the good in life.") //Send a message reaching out
             })() //Imagine seeing this as a cave painting. You would assume the cavemen were idiots. And you'd be right.
         }
+        if (this.analyze(msg.content) < -40) {
+            for (var i in this.data.network[msg.author.id]) {
+                (async (person, text, username) => { //Established needed data
+                    var person = await this.data.bot.users.fetch(person) //Get person
+                    var channel = person.dmChannel //Get the DM channel or create one
+                    if (!channel) {
+                        channel = await person.createDM()
+                    }
+                    channel.send(`Your friend, ${username}, sent a message which we judged to be incredibly negative. They said:
+                    
+${text}
+
+If this is in fact negative, consider reaching out to the person to make sure everything's alright.`) //Send a message reaching out to this contact
+                }).bind(this, i, msg.content, msg.author.username)() //Bind related data
+            }
+        }
         if (msg.content.match(/\/positivity <@!?(\d+)>/i)) { //Check for the crawl command
             msg.channel.send("Got it, working on it...")
             this.crawl(msg, msg.content.match(/\/positivity <@!?(\d+)>/i)[1])
