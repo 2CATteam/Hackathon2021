@@ -22,8 +22,8 @@ module.exports = class messageChecker {
         for (var i in this.data.messageData) { //Loop through each user
             let difference = 0 //difference of date
             difference = (new Date()).getTime() - this.data.messageData[i].lastMsgDate.getTime()
-            if (difference > 7 * 24 * 60 * 60 * 1000) { //If the difference is more than one week
-                for (var j in this.data.network[i]) { //For each contact
+            for (var j in this.data.network[i]) { //For each contact
+                if (difference > this.data.network[i][j].days * 24 * 60 * 60 * 1000) { //If the difference is more than the requested amount of days
                     if (!this.data.network[i][j].messages) { //If they haven't been contacted
                         this.data.network[i][j].messages = true //Contact them
                         this.data.bot.users.fetch(j).then((async (personId, usr) => {
@@ -36,12 +36,10 @@ module.exports = class messageChecker {
                             dms.send(`Your friend, ${person.username}, has not sent a message in a week. It may be a good idea to go check on them.`)
                         }).bind(this, i))
                     }
-                }
-            } else { //Dipped under 40 hours, so reset stuff
-                for (var j in this.data.network[i]) {
+                }else { //Dipped under set days, so reset stuff
                     this.data.network[i][j].messages = false
                 }
-            }
+            } 
         }
     }
 }
