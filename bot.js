@@ -22,6 +22,8 @@ var messageFile = require("./messageChecker.js") //Tracks messages number
 var messageChecker = new messageFile(data)
 var signupFile = require("./signup.js") //Allows you to opt-in to being supported
 var signup = new signupFile(data)
+var shamingFile = require("./shaming.js") //Allows you to opt-in to being supported
+var shaming = new shamingFile(data)
 
 bot.on("ready", () => { //Lets us know when it's ready to go
     console.log("Hello, world!")
@@ -55,11 +57,13 @@ bot.on("message", (msg) => { //Message routing
     positivity.look(msg) //Send messages to appropriate place
     messageChecker.look(msg)
     signup.look(msg)
+    shaming.read(msg)
 })
 
 bot.on("presenceUpdate", (old, current) => {
     console.log("Got update")
     activity.look(current) //Send presence information to activity tracker
+    shaming.look(current)
 })
 
 bot.login(consts.token) //Start to log in
