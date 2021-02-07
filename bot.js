@@ -40,23 +40,25 @@ bot.on("message", (msg) => { //Message routing
         })
         data.rw.write("activity.json", data.activityData) //Save file
     }
-    if (msg.content.match(/^\/forget/i)) {
+    if (msg.content.match(/^\/forget/i)) { //Clear all history of gaming
         data.activityData[msg.author.id] = []
         data.rw.write("activity.json", data.activityData) //Save file
     }
-    if (msg.content.match(/^\/oldify (\d+)/i)) {
-        data.messageData[msg.author.id] = { "lastMsgDate": new Date((new Date()).getTime() - (parseInt(msg.content.match(/^\/oldify (\d+)/i)[1])) * 24 * 60 * 60 * 1000) }
-        data.rw.write("messageChecker.json", data.messageData)
+    if (msg.content.match(/^\/oldify (\d+)/i)) { //Manually set oldest comment
+        data.messageData[msg.author.id] = {
+            "lastMsgDate": new Date((new Date()).getTime() - (parseInt(msg.content.match(/^\/oldify (\d+)/i)[1])) * 24 * 60 * 60 * 1000) //Manually set last message date to n days ago
+        }
+        data.rw.write("messageChecker.json", data.messageData) //Save file
         return
     }
-    positivity.look(msg)
+    positivity.look(msg) //Send messages to appropriate place
     messageChecker.look(msg)
     signup.look(msg)
 })
 
 bot.on("presenceUpdate", (old, current) => {
     console.log("Got update")
-    activity.look(current)
+    activity.look(current) //Send presence information to activity tracker
 })
 
-bot.login(consts.token)
+bot.login(consts.token) //Start to log in

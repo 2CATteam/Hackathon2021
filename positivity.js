@@ -1,23 +1,22 @@
-const { TextChannel } = require('discord.js')
-var fs = require('fs')
+const { TextChannel } = require('discord.js') //We compare to this later
 
 module.exports = class PositivityTracker {
 	constructor(data) {
-		this.data = data
-		this.positivityObj = JSON.parse(fs.readFileSync("./AFINN.json"))
+		this.data = data //Set shared data
+		this.positivityObj = this.data.rw.read("./AFINN.json") //Read in converted dataset
 	}
 
-	look(msg) {
-        if (this.analyze(msg.content) < -20) {
-            (async () => {
-                var channel = msg.author.dmChannel
+	look(msg) { //Look at this message
+        if (this.analyze(msg.content) < -20) { //If value of message is beneath our arbitrary threshold
+            (async () => { //Holy crap this is hacky but hey this is a Hackathon
+                var channel = msg.author.dmChannel //Get the DM channel or create one
                 if (!channel) {
                     channel = await msg.author.createDM()
                 }
-                channel.send("Hey, your last message seemed a little negative. It's okay to be negative sometimes, but maybe take a moment to consider the good in life.")
-            })()
+                channel.send("Hey, your last message seemed a little negative. It's okay to be negative sometimes, but maybe take a moment to consider the good in life.") //Send a message reaching out
+            })() //Imagine seeing this as a cave painting. You would assume the cavemen were idiots. And you'd be right.
         }
-        if (msg.content.match(/\/positivity <@!?(\d+)>/i)) {
+        if (msg.content.match(/\/positivity <@!?(\d+)>/i)) { //Check for the crawl command
             msg.channel.send("Got it, working on it...")
             this.crawl(msg, msg.content.match(/\/positivity <@!?(\d+)>/i)[1])
         }
@@ -37,42 +36,39 @@ module.exports = class PositivityTracker {
 				//if the words match sum up the  key values
 				if(messageWord == h){
 					positivityScore += this.positivityObj[h]
-					console.log(positivityScore)
 				}
 			}
 		}
-        console.log("Total Score: " + positivityScore)
         return positivityScore
     }
 
-    async crawl(msg, id) {
+    async crawl(msg, id) { //Crawl a server looking for messages by a person
         var sum = 0
         var count = 0
-        var toCheck = msg.guild.channels.cache.array()
-        for (var i in toCheck) {
-            if (toCheck[i] instanceof TextChannel) {
-                console.log(`Looking at channel ${toCheck[i].name}`)
-                var earliestMessage = null
-                do {
-                    let messages = await toCheck[i].messages.fetch((earliestMessage ? {limit: 100, before: earliestMessage.id} : {limit: 100}))
-                    messages = messages.array()
+        var toCheck = msg.guild.channels.cache.array() //Get all the channels in a guild
+        for (var i in toCheck) { //For each channel
+            if (toCheck[i] instanceof TextChannel) { //If it's a text channel...
+                console.log(`Looking at channel ${toCheck[i].name}`) //Log it
+                var earliestMessage = null //Stores the current earliest message
+                do { //Do-while: Because Hackathons make it okay
+                    let messages = await toCheck[i].messages.fetch((earliestMessage ? {limit: 100, before: earliestMessage.id} : {limit: 100})) //Ask for the next 100 messages (Or first 100 if this is the first time)
+                    messages = messages.array() //Convert to array
                     console.log(messages.length)
-                    if (messages.length < 100) {
+                    if (messages.length == 0) { //End if we're at the end
                         break
                     }
-                    for (var j in messages) {
-                        if (!earliestMessage || messages[j].id < earliestMessage.id) {
+                    for (var j in messages) { //For each message
+                        if (!earliestMessage || messages[j].id < earliestMessage.id) { //Keep track of the earliest message
                             earliestMessage = messages[j]
                         }
-                        if (messages[j].author.id == id) {
-                            console.log(messages[j].content)
-                            count++
-                            sum += this.analyze(messages[j].content)
+                        if (messages[j].author.id == id) { //If it's by the right person...
+                            count++ //Increment the counter
+                            sum += this.analyze(messages[j].content) //Analyze the message and save the sum
                         }
                     }
-                } while (earliestMessage)
+                } while (earliestMessage) //Run while the earliest message exists
             }
         }
-        msg.channel.send(`This person's total positivity score was ${sum} with ${count} messages in this server`)
+        msg.channel.send(`This person's total positivity score was ${sum} with ${count} messages in this server`) //Report results
     }
 }
