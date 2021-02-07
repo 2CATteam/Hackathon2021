@@ -22,7 +22,7 @@ var messageFile = require("./messageChecker.js") //Tracks messages number
 var messageChecker = new messageFile(data)
 var signupFile = require("./signup.js") //Allows you to opt-in to being supported
 var signup = new signupFile(data)
-var shamingFile = require("./shaming.js") //Allows you to opt-in to being supported
+var shamingFile = require("./shaming.js") //Allows you to be encouraged to pay attention in class rather than gaming
 var shaming = new shamingFile(data)
 
 bot.on("ready", () => { //Lets us know when it's ready to go
