@@ -24,7 +24,7 @@ module.exports = class Signup {
             }
             this.sendSupportRequest(id, msg.author.username, msg.author.id, videoGameHours, msgDays)
         } else if (msg.content.match(/^\/support (\d+)(?:\s+(\d+)\s+(\d+))?/i)) {
-            var supReq = msg.content.match(/^\/support (.+#\d{4})(?:\s+(\d+)\s+(\d+))?/i)
+            var supReq = msg.content.match(/^\/support (\d+)(?:\s+(\d+)\s+(\d+))?/i)
             var id = supReq[1]
             var videoGameHours = supReq[2]
             var msgDays = supReq[3]
@@ -44,7 +44,7 @@ module.exports = class Signup {
         }
     }
 
-    sendSupportRequest(id, supporter, supporterID, hours, days) {
+    sendSupportRequest(id, supporter, supporterID, hours = 40, days = 7) {
         this.data.bot.users.fetch(id).then(async(usr) => {
             var channel = usr.dmChannel
             if (!channel) {
